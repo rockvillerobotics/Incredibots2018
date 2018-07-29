@@ -1,0 +1,1 @@
+Also affectionately known as "Frozone".  This robot grabs the yellow crates and deposits them into the yellow zone. Then, if time is willing, it will grab botguy and the enemy crates and put him on our side

@@ -1,5 +1,5 @@
-#	When possible, make values into constants so they can be easily changed throughout the code at once. 
-#	Constants are subject to change, so make sure to check the values to ne certain that they are right.
+#   When possible, make values into constants so they can be easily changed throughout the code at once. 
+#   Constants are subject to change, so make sure to check the values to be certain that they are right.
 #   Note: All constant timings are assumed to be in milliseconds unless otherwise specified.
 
 from wallaby import *

@@ -79,7 +79,7 @@ def calibrate():
     else: # Clone bot
         calibrate_tics = 2500
     print "Running calibrate()"
-    m.activate_both_motors(int (c.BASE_LM_POWER / 3), int(c.BASE_RM_POWER / 3))
+    m.activate_motors(int (c.BASE_LM_POWER / 3), int(c.BASE_RM_POWER / 3))
     while gmpc(c.LEFT_MOTOR) < calibrate_tics and gmpc(c.RIGHT_MOTOR) < calibrate_tics:
         if analog(c.RIGHT_TOPHAT) > max_sensor_value_right:
             max_sensor_value_right = analog(c.RIGHT_TOPHAT)
@@ -94,7 +94,7 @@ def calibrate():
         if analog(c.THIRD_TOPHAT) < min_sensor_value_third:
             min_sensor_value_third = analog(c.THIRD_TOPHAT)
         msleep(1)
-    m.deactivate_both_motors()
+    m.deactivate_motors()
     c.LEFT_TOPHAT_BW = int(((max_sensor_value_left + min_sensor_value_left) / 2)) - 1000
     c.RIGHT_TOPHAT_BW = int(((max_sensor_value_right + min_sensor_value_right) / 2)) - 1000
     if c.IS_MAIN_BOT:

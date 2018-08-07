@@ -13,7 +13,7 @@ def main():
     print "Starting main()\n"
     u.setup()
     u.calibrate()
-    # Put the command from actions you want to run here. 
+    a.get_crates() 
     # Don't write out your entire command out here; it gets to cluttered.
     u.shutdown()
 

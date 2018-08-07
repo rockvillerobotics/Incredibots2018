@@ -8,53 +8,65 @@ import constants as c
 # Note: Every time the wheels are set to a speed, they must be set back to 0 or they will continue to spin.
 
 
-def activate_both_motors(left_motor_power = c.BASE_LM_POWER, right_motor_power = c.BASE_RM_POWER, starting_speed_left = 0, starting_speed_right = 0):
-    accel(left_motor_power, right_motor_power, starting_speed_left, starting_speed_right)
+def activate_motors(left_motor_power = c.BASE_LM_POWER, right_motor_power = c.BASE_RM_POWER, starting_speed_left = 0, starting_speed_right = 0):
+    left_velocity_change = left_motor_power / 30
+    right_velocity_change = right_motor_power / 30
+    while abs(starting_speed_left - left_motor_power) > 100 and abs(starting_speed_right - right_motor_power) > 100:
+        mav(c.LEFT_MOTOR, starting_speed_left)
+        starting_speed_left += left_velocity_change
+        mav(c.RIGHT_MOTOR, starting_speed_right)
+        starting_speed_right += right_velocity_change
+        if abs(starting_speed_left) > abs(left_motor_power) or abs(starting_speed_right) > abs(right_motor_power):
+            print "Velocity too high"
+            exit(86)
+        msleep(1)
+    mav(c.LEFT_MOTOR, left_motor_power)  # Ensures actual desired value is reached.
+    mav(c.RIGHT_MOTOR, right_motor_power)
 
 
-def deactivate_both_motors():
+def deactivate_motors():
     mav(c.LEFT_MOTOR, 0)
     mav(c.RIGHT_MOTOR, 0)
 
 
 def drive(time = c.DEFAULT_DRIVE_TIME, drive_left_motor_power = c.BASE_LM_POWER, drive_right_motor_power = c.BASE_RM_POWER, drive_starting_speed_left = 0, drive_starting_speed_right = 0, stop = True, drive_print = True):
-    activate_both_motors(drive_left_motor_power, drive_right_motor_power, drive_starting_speed_left, drive_starting_speed_right)
+    activate_motors(drive_left_motor_power, drive_right_motor_power, drive_starting_speed_left, drive_starting_speed_right)
     if drive_print == True:
         print "Drive forwards for %d ms" % time
     msleep(time)
     if stop == True:
-        deactivate_both_motors()
+        deactivate_motors()
 
 
 def turn_left(time = c.LEFT_TURN_TIME, left_motor_power = -1 * c.BASE_LM_POWER, right_motor_power = c.BASE_RM_POWER, starting_speed_left = 0, starting_speed_right = 0, stop = True, turn_left_print = True):
-    activate_both_motors(left_motor_power, right_motor_power, starting_speed_left, starting_speed_right)
+    activate_motors(left_motor_power, right_motor_power, starting_speed_left, starting_speed_right)
     if turn_left_print == True:
         print "Turn left for %d ms" % time
     msleep(time)
     if stop == True:
-        deactivate_both_motors()
+        deactivate_motors()
 
 
 def turn_right(time = c.RIGHT_TURN_TIME, left_motor_power = c.BASE_LM_POWER, right_motor_power = -1 * c.BASE_RM_POWER, starting_speed_left = 0, starting_speed_right = 0, stop = True, turn_right_print = True):
-    activate_both_motors(left_motor_power, right_motor_power, starting_speed_left, starting_speed_right)
+    activate_motors(left_motor_power, right_motor_power, starting_speed_left, starting_speed_right)
     if turn_right_print == True:
         print "Turn right for %d ms" % time
     msleep(time)
     if stop == True:
-        deactivate_both_motors()
+        deactivate_motors()
 
 
 def backwards(time = c.DEFAULT_BACKWARDS_TIME, backwards_left_motor_power = -1 * c.BASE_LM_POWER, backwards_right_motor_power = -1 * c.BASE_RM_POWER, backwards_starting_speed_left = 0, backwards_starting_speed_right = 0, stop = True, backwards_print = True):
-    activate_both_motors(backwards_left_motor_power, backwards_right_motor_power, backwards_starting_speed_left, backwards_starting_speed_right)
+    activate_motors(backwards_left_motor_power, backwards_right_motor_power, backwards_starting_speed_left, backwards_starting_speed_right)
     if backwards_print == True:
         print "Drive backwards for %d ms"%time
     msleep(time)
     if stop == True:
-        deactivate_both_motors()
+        deactivate_motors()
 
 
 def wait(time = 1000):  # Same as msleep command, but stops the wheels.
-    deactivate_both_motors()
+    deactivate_motors()
     msleep(time)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Complex Movement ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,22 +75,22 @@ def drive_tics(tics, starting_speed_left = 0, starting_speed_right = 0, stop = T
     print "Starting drive_tics"
     cmpc(c.LEFT_MOTOR)
     cmpc(c.RIGHT_MOTOR)
-    activate_both_motors(c.BASE_LM_POWER, c.BASE_RM_POWER, starting_speed_left, starting_speed_right)
+    activate_motors(c.BASE_LM_POWER, c.BASE_RM_POWER, starting_speed_left, starting_speed_right)
     while gmpc(c.LEFT_MOTOR) < tics and gmpc(c.RIGHT_MOTOR) > -1 * tics:
         pass
     if stop == True:
-        deactivate_both_motors()
+        deactivate_motors()
 
 
 def backwards_tics(tics, starting_speed_left = 0, starting_speed_right = 0, stop = True):
     print "Starting backwards_tics"
     cmpc(c.LEFT_MOTOR)
     cmpc(c.RIGHT_MOTOR)
-    activate_both_motors(-1 * c.BASE_LM_POWER, -1 * c.BASE_RM_POWER, starting_speed_left, starting_speed_right)
+    activate_motors(-1 * c.BASE_LM_POWER, -1 * c.BASE_RM_POWER, starting_speed_left, starting_speed_right)
     while gmpc(c.LEFT_MOTOR) > -1 * tics and gmpc(c.RIGHT_MOTOR) < tics:
         pass
     if stop == True:
-        deactivate_both_motors()
+        deactivate_motors()
 
 
 def drive_no_print(time = c.DEFAULT_DRIVE_TIME, drive_left_motor_power = c.BASE_LM_POWER, drive_right_motor_power = c.BASE_RM_POWER, starting_speed_left = 0, starting_speed_right = 0, stop = True):

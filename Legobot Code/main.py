@@ -13,8 +13,10 @@ def main():
     print "Starting main()\n"
     u.setup()
     u.calibrate()
-    # Put the command from actions you want to run here.
-    # Don't write out your entire command out here; it gets to cluttered.
+    a.get_crates()
+    a.put_crates_in_correct_zone()
+    a.get_botguy()
+    a.put_botguy_on_side()
     u.shutdown()
 
 

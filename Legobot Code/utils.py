@@ -34,7 +34,8 @@ def wait_for_button():
     msleep(500)
 
 
-def setup():  # Enables servos and sets them to predefined starting positions. This goes before every run
+def setup():
+# Enables servos and sets them to predefined starting positions. This goes before every run
     print "Starting setup()"
     if c.IS_MAIN_BOT:
         print "I am the main bot"
@@ -63,7 +64,8 @@ def setup():  # Enables servos and sets them to predefined starting positions. T
     print "Setup complete\n\n"
 
 
-def calibrate():  # Code to calibrate the bw values. This goes before every run. Ends with light sensor calibration
+def calibrate():
+# Code to calibrate the bw values. This goes before every run. Ends with light sensor calibration.
     max_sensor_value_right = 0
     min_sensor_value_right = 90000
     max_sensor_value_left = 0
@@ -77,7 +79,7 @@ def calibrate():  # Code to calibrate the bw values. This goes before every run.
     else: # Clone bot
         calibrate_tics = 2500
     print "Running calibrate()"
-    m.activate_both_motors(int (c.BASE_LM_POWER / 3), int(c.BASE_RM_POWER / 3))
+    m.activate_motors(int (c.BASE_LM_POWER / 3), int(c.BASE_RM_POWER / 3))
     while gmpc(c.LEFT_MOTOR) < calibrate_tics and gmpc(c.RIGHT_MOTOR) < calibrate_tics:
         if analog(c.RIGHT_TOPHAT) > max_sensor_value_right:
             max_sensor_value_right = analog(c.RIGHT_TOPHAT)
@@ -92,7 +94,7 @@ def calibrate():  # Code to calibrate the bw values. This goes before every run.
         if analog(c.THIRD_TOPHAT) < min_sensor_value_third:
             min_sensor_value_third = analog(c.THIRD_TOPHAT)
         msleep(1)
-    m.deactivate_both_motors()
+    m.deactivate_motors()
     c.LEFT_TOPHAT_BW = int(((max_sensor_value_left + min_sensor_value_left) / 2)) - 1000
     c.RIGHT_TOPHAT_BW = int(((max_sensor_value_right + min_sensor_value_right) / 2)) - 1000
     if c.IS_MAIN_BOT:
@@ -114,11 +116,12 @@ def calibrate():  # Code to calibrate the bw values. This goes before every run.
     msleep(25)
     ao()
     msleep(1000)
-    wait_for_light(c.LIGHT_SENSOR)
-    shut_down_in(118)  # URGENT: PUT BACK IN BEFORE COMPETITION
+    #wait_for_light(c.LIGHT_SENSOR)
+    #shut_down_in(118)  # URGENT: PUT BACK IN BEFORE COMPETITION
 
 
-def calibrate_manually(base_time = 60):  # A calibration that requires manually pressing the button. It will print directions
+def calibrate_manually(base_time = 60):
+# A calibration that requires manually pressing the button. It will print directions on how to do it correctly.
     sec = seconds() + base_time
     exit_function = False    
     print "Running calibrate_manually()"
@@ -170,7 +173,8 @@ def calibrate_manually(base_time = 60):  # A calibration that requires manually 
     shut_down_in(118)
 
 
-def shutdown(value = 256):  # Shuts down code without exit by default. Will exit if number is put in parantheses
+def shutdown(value = 256):
+# Shuts down code without exit by default. Will exit if number is put in parantheses.
     print "Starting shutdown()"
     mav(c.LEFT_MOTOR, 0)
     mav(c.RIGHT_MOTOR, 0)
@@ -184,19 +188,21 @@ def shutdown(value = 256):  # Shuts down code without exit by default. Will exit
         exit(value)
 
 
-def sd(value = 86):  # Shortcut to end a run early
+def sd(value = 86):
+# Shortcut to end a run early.
     shutdown(value)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Debug~~~~~~~~~~~~~~~~~~~~~~~~
 
-def test_movement(exit = True):  # Used to see if movements and their defaults function as intended
+def test_movement(exit = True):
+# Used to see if movements and their defaults function as intended.
     print "Testing movement\n"
     m.turn_left()
     msleep(500)
     m.turn_right()
     msleep(500)
     m.drive(5000)
-    msleep(500)  # Using msleep() instead of wait() to make sure each command turns off its wheels
+    msleep(500)  # Using msleep() instead of wait() to make sure each command turns off its wheels.
     m.backwards(5000)
     msleep(500)
     print "Testing complete."
@@ -220,7 +226,7 @@ def test_movement_extensive(exit = True):
     m.turn_right()
     msleep(500)
     m.drive(1000)
-    msleep(500)  # Using msleep() instead of wait() to make sure each command turns off its wheels
+    msleep(500)  # Using msleep() instead of wait() to make sure each command turns off its wheels.
     m.backwards(1000)
     msleep(500)
     if exit == True:
@@ -228,10 +234,11 @@ def test_movement_extensive(exit = True):
         exit(86)
 
 
-def test_servos(exit = True):  # Used to see if basic servo commands and constants function as intended
+def test_servos(exit = True):
+# Used to see if basic servo commands and constants function as intended.
     print "Testing servos\n"
     m.claw_slow(c.CLAW_CLOSE_POS)
-    m.wait()  # Using wait() instead of msleep() to make sure wheels are off
+    m.wait()  # Using wait() instead of msleep() to make sure wheels are off.
     m.claw_slow(c.CLAW_OPEN_POS)
     m.wait()
     m.arm_slow(c.ARM_DOWN_POS)
@@ -244,7 +251,7 @@ def test_servos(exit = True):  # Used to see if basic servo commands and constan
         exit(86)
 
 
-def test_servos_extensive(exit = True):  # Runs all constant servo positions for arm and claw. Not updated
+def test_servos_extensive(exit = True):  # Runs all constant servo positions for arm and claw. Not updated.
     print "Testing servos extensively\n"
     m.claw_slow(c.STARTING_CLAW_POS)
     m.arm_slow(c.STARTING_ARM_POS)
